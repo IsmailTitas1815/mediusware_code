@@ -7,8 +7,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Products</h1>
     </div>
-
-
+        {% comment %} {{object_list}} {% endcomment %}
     <div class="card">
         <form action="" method="get" class="card-header">
             <div class="form-row justify-content-between">
@@ -41,79 +40,55 @@
             </div>
         </form>
 
-        <div class="card-body">
-            <div class="table-response">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Variant</th>
-                        <th width="150px">Action</th>
-                    </tr>
-                    </thead>
+    <div class="card-body">
+        <div class="table-response">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Variant</th>
+                    <th width="150px">Action</th>
+                </tr>
+                </thead>
+            {%for prod in product %}
+                <tbody>
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{prod.title}} <br> {{prod.created_at}}</td>
+                    <td>{{prod.description}}</td>
+                    <td>
+                        <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant{{ forloop.counter }}">
+                            {{prod.variant_price}}
+                            {% for vari in prod.variant %}
+                            <dt class="col-sm-3 pb-0">
+                                {{vari.variant.title}}
+                            </dt>
+                            <dd class="col-sm-9">
+                                <dl class="row mb-0">
+                                    <dd class="col-sm-4 pb-0">Price : 100</dd>
+                                    <dd class="col-sm-8 pb-0">InStock : 50.</dd>
+                                </dl>
+                            </dd>
+                            {% endfor %}
+                        </dl>
+                        <button onclick="$('#variant{{ forloop.counter }}').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
+                        </button>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a href="" class="btn btn-success">Edit</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+                </tbody>
 
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>T-Shirt <br> Created at : 25-Aug-2020</td>
-                        <td>Quality product in low cost</td>
-                        <td>
-                            <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
-                                <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Full
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Full
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                            </dl>
-                            <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
-                            </button>
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="" class="btn btn-success">Edit</a>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
+            </table>
         </div>
 
+    </div>
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
