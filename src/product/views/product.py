@@ -24,14 +24,15 @@ class ProductListView(generic.ListView):
         newList = []
         for prod in product:
             newProduct = dict(prod)
-            prod_variant = ProductVariant.objects.filter(product = prod['id']).all()
+            prod_variant = ProductVariant.objects.select_related('variant','product').filter(product = prod['id']).all()
+            prod_var_and_price = []
             for var in prod_variant:
-                prodVarPrice = ProductVariantPrice.objects.prefetch_related('product_variant_one','product_variant_two','product_variant_three','product').filter( Q(product_variant_one=var.id) | Q(product_variant_two=var.id) |Q(product_variant_three=var.id)).all()
-                # print(prodVarPrice)
-            newProduct['variant'] = prod_variant
-            # prod_variant_price = ProductVariantPrice.objects.filter(product_variant_one__in = prod_variant, product = prod['id']).all()
-            # newProduct['variant_price'] = prod_variant_price
-            # print(prod_variant_price)
+                prodVarPrice = ProductVariantPrice.objects.filter( (Q(product_variant_one=var.id) | Q(product_variant_two=var.id) | Q(product_variant_three=var.id)) & Q(product = prod['id'])).first()
+                li = [var, prodVarPrice]
+                prod_var_and_price.append(li)
+            newProduct['variant'] = prod_var_and_price
+            # print("tup[0]",newProduct['variant'][1][0])
+            # print(prod['id'], newProduct['variant'])
             newList.append(newProduct)
         context['product'] = newList
         # context['product'] = product
