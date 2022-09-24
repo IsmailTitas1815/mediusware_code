@@ -60,14 +60,16 @@
                     <td>{{prod.description}}</td>
                     <td>
                         <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant{{ forloop.counter }}">
-                            {% for vari in prod.variant %}
+                            {% for vari in prod.variant_price %}
                             <dt class="col-sm-3 pb-0">
-                                {{vari.0.variant.title}}
+                                {{vari.product_variant_one.variant_title}}
+                                {{vari.product_variant_two.variant_title}}
+                                {{vari.product_variant_three.variant_title}}
                             </dt>
                             <dd class="col-sm-9">
                                 <dl class="row mb-0">
-                                    <dd class="col-sm-4 pb-0">Price : {{vari.1.price}}</dd>
-                                    <dd class="col-sm-8 pb-0">InStock : {{vari.1.stock}}.</dd>
+                                    <dd class="col-sm-4 pb-0">Price : {{vari.price}}</dd>
+                                    <dd class="col-sm-8 pb-0">InStock : {{vari.stock}}.</dd>
                                 </dl>
                             </dd>
                             {% endfor %}

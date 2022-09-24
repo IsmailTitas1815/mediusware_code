@@ -25,14 +25,9 @@ class ProductListView(generic.ListView):
         for prod in product:
             newProduct = dict(prod)
             prod_variant = ProductVariant.objects.select_related('variant','product').filter(product = prod['id']).all()
-            prod_var_and_price = []
-            for var in prod_variant:
-                prodVarPrice = ProductVariantPrice.objects.filter( (Q(product_variant_one=var.id) | Q(product_variant_two=var.id) | Q(product_variant_three=var.id)) & Q(product = prod['id'])).first()
-                li = [var, prodVarPrice]
-                prod_var_and_price.append(li)
-            newProduct['variant'] = prod_var_and_price
-            # print("tup[0]",newProduct['variant'][1][0])
-            # print(prod['id'], newProduct['variant'])
+            prodVarPrice = ProductVariantPrice.objects.select_related('product_variant_one','product_variant_two','product_variant_three').filter( (Q(product_variant_one__in=prod_variant) & Q(product_variant_two__in=prod_variant) & Q(product_variant_three__in=prod_variant)) & Q(product = prod['id'])).all()
+            newProduct['variant'] = prod_variant
+            newProduct['variant_price'] = prodVarPrice
             newList.append(newProduct)
         context['product'] = newList
         # context['product'] = product
