@@ -7,6 +7,9 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Products</h1>
     </div>
+    {% comment %} {% for product_obj in page_obj %}
+    {{ product_obj }}<br>
+    {% endfor %} {% endcomment %}
         {% comment %} {{object_list}} {% endcomment %}
     <div class="card">
         <form action="" method="get" class="card-header">
@@ -17,6 +20,10 @@
                 <div class="col-md-2">
                     <select name="variant" id="" class="form-control">
                         <option selected disabled>--Select A Variant--</option>
+                        {% for variant in all_variant %}
+                        <option>{{variant}}</option>
+                        
+                        {% endfor %}
 
                     </select>
                 </div>
@@ -52,7 +59,7 @@
                     <th width="150px">Action</th>
                 </tr>
                 </thead>
-            {%for prod in product %}
+            {%for prod in page_obj %}
                 <tbody>
                 <tr>
                     <td>{{ forloop.counter }}</td>
@@ -62,8 +69,8 @@
                         <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant{{ forloop.counter }}">
                             {% for vari in prod.variant_price %}
                             <dt class="col-sm-3 pb-0">
-                                {{vari.product_variant_one.variant_title}}
-                                {{vari.product_variant_two.variant_title}}
+                                {{vari.product_variant_one.variant_title}} /
+                                {{vari.product_variant_two.variant_title}} /
                                 {{vari.product_variant_three.variant_title}}
                             </dt>
                             <dd class="col-sm-9">
@@ -93,10 +100,26 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
-                    <p>Showing 1 to 10 out of 100</p>
+                    <p>{{page_obj}}</p>
                 </div>
                 <div class="col-md-2">
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
 
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
